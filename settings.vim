@@ -57,5 +57,6 @@ if has('gui_running')
   set nonu
   set cc=80
   set tw=80
+  map <f12> :silent !cmd /Q /C ""python" "c:\%HOMEPATH\%/Dropbox/Miki/web_gen.py""<CR>
 endif 
 
