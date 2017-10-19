@@ -3,6 +3,7 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 Plugin 'fugitive.vim'
+Plugin 'airblade/vim-gitgutter'
 Plugin 'ctrlp.vim'
 Plugin 'surround.vim'
 Plugin 'morhetz/gruvbox'
@@ -14,6 +15,7 @@ Plugin 'godlygeek/tabular'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'nathanaelkane/vim-indent-guides'
+Plugin 'junegunn/goyo.vim'
 Plugin 'w0rp/ale'
 if executable('ag')
 	Plugin 'rking/ag.vim'
@@ -64,7 +66,7 @@ let g:NERDCommentEmptyLines = 1
 " Enable trimming of trailing whitespace when uncommenting
 let g:NERDTrimTrailingWhitespace = 1
 
-" neocomplete
+" neocomplcache
 "Note: This option must set it in .vimrc(_vimrc).  NOT IN .gvimrc(_gvimrc)!
 " Disable AutoComplPop.
 let g:acp_enableAtStartup = 0
@@ -163,6 +165,9 @@ let g:airline#extensions#tabline#enabled = 1
 " Indent Guides
 let g:indent_guides_start_level = 2
 let g:indent_guides_enable_on_vim_startup = 1
+
+" Gitgutter
+set updatetime=250
 
 " ALE
 let g:ale_lint_delay=1000 " 1sec

@@ -41,7 +41,9 @@ set smartcase
 set nowritebackup
 set noswapfile
 
+" ETC
 set fileencoding=utf-8
+autocmd BufNewFile,BufRead *.md set filetype=markdown
 
 " GUI setting
 if has('gui_running')
