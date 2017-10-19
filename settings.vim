@@ -53,6 +53,9 @@ if has('gui_running')
   set langmenu=cp949
   set guifont=D2Coding:h12:cHANGEUL:qDRAFT
   set lines=26 columns=80
-  cd ~/Documents/Notes/
+  cd ~/Dropbox/Miki/md
+  set nonu
+  set cc=80
+  set tw=80
 endif 
 
