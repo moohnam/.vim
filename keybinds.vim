@@ -11,6 +11,8 @@ map <F9> <ESC>:q!<CR>
 " Rebind <Leader> Key
 let mapleader=','
 
+map <Leader>qs <esc>:mksession $HOME/.vim/sessions/quicksave.vim<CR>
+map <Leader>ql <esc>:source $HOME/.vim/sessions/quicksave.vim<CR>
 map <Leader>r <esc>:source $HOME/.vim/vimrc<CR>
 map <Leader>c <esc>:tabnew<CR>
 map <Leader>M <esc>:tabnext<CR>
