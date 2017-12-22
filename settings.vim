@@ -44,6 +44,11 @@ set noswapfile
 " ETC
 set fileencoding=utf-8
 autocmd BufNewFile,BufRead *.md set filetype=markdown
+if v:version > 703 || v:version == 703 && has('patch541')
+  set formatoptions+=j
+endif
+match ErrorMsg '\%>120v.\+'
+match ErrorMsg '\s\+$'
 
 " GUI setting
 if has('gui_running')
@@ -53,10 +58,9 @@ if has('gui_running')
   set langmenu=cp949
   set guifont=D2Coding:h12:cHANGEUL:qDRAFT
   set lines=26 columns=80
-  cd ~/Dropbox/Miki/md
+  cd ~/Dropbox/Site/md/
   set nonu
   set cc=80
   set tw=80
-  map <f12> :silent !cmd /Q /C ""python" "c:\%HOMEPATH\%/Dropbox/Miki/web_gen.py""<CR>
 endif 
 
