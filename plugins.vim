@@ -171,3 +171,6 @@ set updatetime=250
 
 " ALE
 let g:ale_lint_delay=1000 " 1sec
+
+" Goyo
+noremap <leader>d <ESC>:Goyo<CR>
