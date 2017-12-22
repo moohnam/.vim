@@ -36,6 +36,12 @@ inoremap yy <ESC>yy
 inoremap :wq <ESC>:wq
 nmap j gj
 nmap k gk
+nnoremap <BS> {
+onoremap <BS> {
+vnoremap <BS> {
+nnoremap <expr> <CR> empty(&buftype) ? '}' : '<CR>'
+onoremap <expr> <CR> empty(&buftype) ? '}' : '<CR>'
+vnoremap <CR> }
 
 inoremap <C-a> <Home>
 inoremap <C-e> <End>
