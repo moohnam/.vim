@@ -19,14 +19,15 @@ set undodir=~/.vim/undo
 
 " Folding
 set foldenable
-set foldmethod=marker
+set foldmethod=indent
+set foldlevelstart=99
 set cino=N-s
 match Error /{{{\|}}}/
 
 " Tab
-set tabstop=4
-set softtabstop=4
-set shiftwidth=4
+set tabstop=2
+set softtabstop=2
+set shiftwidth=2
 set shiftround
 set expandtab
 autocmd FileType make setlocal noexpandtab
