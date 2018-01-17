@@ -20,6 +20,8 @@ map <Leader>N <esc>:tabprevious<CR>
 map <Leader>m <esc>:bnext<CR>
 map <Leader>n <esc>:bprevious<CR>
 map <Leader>q <esc>:bp\|bd #<CR>
+
+" Better Window
 map <Tab> <C-w>
 map <Tab><Tab> <C-w>w
 map <Leader><Tab> <esc>:vs<CR><C-w>w
@@ -28,7 +30,7 @@ map <Leader><Tab> <esc>:vs<CR><C-w>w
 vnoremap > >gv 
 vnoremap < <gv
 
-" Better Moving
+" Better Movement
 inoremap jk <ESC>
 inoremap jj <ESC>gj
 inoremap kk <ESC>gk
@@ -51,7 +53,11 @@ inoremap <M-b> <S-Left>
 inoremap <M-f> <Right>
 inoremap <C-d> <Delete>
 
-"highlight last inserted text nnoremap gV `[v`]
+"highlight last inserted text 
+nnoremap gV `[v`]
+
+" Easier block copying to clipboard
+vnoremap <space> "+y
 
 " Bind nohl
 nnoremap <Leader><space> <ESC>:nohlsearch<CR>
