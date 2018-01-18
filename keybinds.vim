@@ -1,5 +1,6 @@
 " fold
-nnoremap <space> za
+nnoremap <space> zA
+nnoremap <leader>f <ESC>:se foldlevel=0<CR>
 
 " Key bindings
 imap <F12> <ESC>ggVG=``zzi
