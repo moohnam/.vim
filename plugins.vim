@@ -7,7 +7,7 @@ Plugin 'airblade/vim-gitgutter'
 Plugin 'ctrlp.vim'
 Plugin 'surround.vim'
 Plugin 'morhetz/gruvbox'
-Plugin 'scrooloose/nerdtree'
+"Plugin 'scrooloose/nerdtree'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'Shougo/neocomplcache.vim'
 Plugin 'EasyMotion'
@@ -26,10 +26,10 @@ filetype plugin indent on
 
 " NERDTree
 "autocmd vimenter * if !argc() | NERDTree | endif
-map <F8> :NERDTreeToggle<CR>
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
-let g:NERDTreeDirArrowExpandable="+"
-let g:NERDTreeDirArrowCollapsible="~"
+"map <F8> :NERDTreeToggle<CR>
+"autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+"let g:NERDTreeDirArrowExpandable="+"
+"let g:NERDTreeDirArrowCollapsible="~"
 
 " CtrlP settings
 set runtimepath^=~/.vim/bundle/ctrlp.vim
