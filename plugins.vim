@@ -73,7 +73,3 @@ noremap <leader>d <ESC>:Goyo<CR>
 " Vimwiki - markdown support
 " Help -> :h vimwiki-syntax
 let g:vimwiki_ext2syntax = {'.md':'markdown', '.markdown':'markdown', '.mdown':'markdown'}
-
-" vim-instant-markdown - Instand markdown preview
-let g:instant_markdown_autostart = 0  " disable auto-start
-map <leader>md :InstantMarkdownPreview<CR>
