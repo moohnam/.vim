@@ -13,7 +13,7 @@ Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'nathanaelkane/vim-indent-guides'
 Plugin 'junegunn/goyo.vim'
-Plugin 'vimwiki/vimwiki'
+Plugin 'plasticboy/vim-markdown'
 if executable('ag')
 	Plugin 'rking/ag.vim'
 endif
@@ -70,6 +70,14 @@ set updatetime=250
 " Goyo
 noremap <leader>d <ESC>:Goyo<CR>
 
-" Vimwiki - markdown support
-" Help -> :h vimwiki-syntax
-let g:vimwiki_ext2syntax = {'.md':'markdown', '.markdown':'markdown', '.mdown':'markdown'}
+" Vim-Markdown
+let g:vim_markdown_folding_disabled=1
+let g:vim_markdown_no_default_key_mappings=1
+set conceallevel=2
+let g:tex_conceal=""
+let g:vim_markdown_math=1
+let g:vim_markdown_new_list_item_indent=2
+" let g:vim_markdown_new_list_item_indent = 0
+" let g:vim_markdown_auto_insert_bullets = 0
+map gx <Plug>Markdown_OpenUrlUnderCursor
+map ge <Plug>Markdown_EditUrlUnderCursor
