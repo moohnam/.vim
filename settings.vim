@@ -63,5 +63,7 @@ if has('gui_running')
   set nonu
   set cc=80
   set tw=80
+  set cole=1
+  set go=gmt
 endif 
 
