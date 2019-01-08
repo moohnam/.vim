@@ -73,3 +73,4 @@ map V V
 " Typo correction for save and exit
 ab Wq wq
 
+autocmd FileType markdown imap ]] ]]<ESC>V:s/\[\[\(.*\)\]\]/\[\1\](\1.md)/g<CR>A
