@@ -22,10 +22,15 @@ map <Leader>m <esc>:bnext<CR>
 map <Leader>n <esc>:bprevious<CR>
 map <Leader>q <esc>:bp\|bd #<CR>
 
-" Better Window
-map <Tab> <C-w>
-map <Tab><Tab> <C-w>w
-map <Leader><Tab> <esc>:vs<CR><C-w>w
+" Better Window Management
+map <A-h> <C-w>h
+map <A-j> <C-w>j
+map <A-k> <C-w>k
+map <A-l> <C-w>l
+map <A-v> <C-w>v
+map <A-w> <C-w>w
+map <A-q> <C-w>q
+map <A-c> <C-w>c
 
 " Better Indentation
 vnoremap > >gv 
@@ -72,5 +77,3 @@ map V V
 
 " Typo correction for save and exit
 ab Wq wq
-
-autocmd FileType markdown imap ]] ]]<ESC>V:s/\[\[\(.*\)\]\]/\[\1\](\1.md)/g<CR>A
