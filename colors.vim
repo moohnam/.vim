@@ -3,7 +3,6 @@ set t_Co=256
 set t_ut=
 
 set background=dark
-"colorscheme jellybeans
 colorscheme gruvbox 
 
 hi Search term=reverse ctermbg=Red ctermfg=Black guibg=Yellow guifg=Black
