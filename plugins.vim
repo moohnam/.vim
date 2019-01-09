@@ -64,7 +64,7 @@ let g:indent_guides_start_level = 1
 let g:indent_guides_enable_on_vim_startup = 1
 
 " Gitgutter
-set updatetime=250
+set updatetime=500
 
-" Goyo
-noremap <leader>d <ESC>:Goyo<CR>
+" Goyo: Distraction-free mode
+noremap <leader>df <ESC>:Goyo<CR>
