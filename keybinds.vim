@@ -23,14 +23,8 @@ map <Leader>n <esc>:bprevious<CR>
 map <Leader>q <esc>:bp\|bd #<CR>
 
 " Better Window Management
-map <A-h> <C-w>h
-map <A-j> <C-w>j
-map <A-k> <C-w>k
-map <A-l> <C-w>l
-map <A-v> <C-w>v
-map <A-w> <C-w>w
-map <A-q> <C-w>q
-map <A-c> <C-w>c
+map <Tab> <C-w>
+map <Tab><Tab> <C-w><C-w>
 
 " Better Indentation
 vnoremap > >gv 
