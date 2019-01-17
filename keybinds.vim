@@ -24,7 +24,6 @@ map <Leader>q <esc>:bp\|bd #<CR>
 
 " Better Window Management
 map <Tab> <C-w>
-map <Tab><Tab> <C-w><C-w>
 
 " Better Indentation
 vnoremap > >gv 
