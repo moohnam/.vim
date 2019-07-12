@@ -21,6 +21,7 @@ map <Leader>N <esc>:tabprevious<CR>
 map <Leader>m <esc>:bnext<CR>
 map <Leader>n <esc>:bprevious<CR>
 map <Leader>q <esc>:bp\|bd #<CR>
+map <Leader>gd <esc>:split<CR><C-]>
 
 " Better Window Management
 map <Tab> <C-w>

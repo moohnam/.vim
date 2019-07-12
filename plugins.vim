@@ -37,9 +37,10 @@ if executable('ag')
 endif
 nmap ; <esc>:CtrlPBuffer<CR>
 nmap <leader>v <esc>:CtrlPMRU<CR>
+nmap <leader>t <esc>:CtrlPTag<CR>
 
 " NERD Commenter
-map <F4> <Plug>NERDCommenterToggle
+map <Leader>ct <Plug>NERDCommenterToggle
 " Add spaces after comment delimiters by default
 let g:NERDSpaceDelims = 1
 " Use compact syntax for prettified multi-line comments

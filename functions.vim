@@ -1,6 +1,6 @@
 " grep related
 command! -nargs=+ NewGrep execute 'silent grep! <args>' | copen 4 | redraw!
-map <Leader>g <esc>:NewGrep 
+map <Leader>gr <esc>:NewGrep 
 if executable('ag')
 	map <F3> :silent execute " grep! " . expand("<cword>") . " " <bar> cwindow<bar> redraw! <CR>
 else
