@@ -1,4 +1,4 @@
-" fold
+" Fold
 nnoremap <space> zA
 nnoremap <leader>f <ESC>:se foldlevel=0<CR>
 
@@ -21,13 +21,14 @@ map <Leader>N <esc>:tabprevious<CR>
 map <Leader>m <esc>:bnext<CR>
 map <Leader>n <esc>:bprevious<CR>
 map <Leader>q <esc>:bp\|bd #<CR>
-map <Leader>gd <esc>:split<CR><C-]>
+map <Leader>gds <esc>:split<CR><C-]>
+map <Leader>gdv <esc>:vertical<CR><C-]>
 
 " Better Window Management
 map <Tab> <C-w>
 
 " Better Indentation
-vnoremap > >gv 
+vnoremap > >gv
 vnoremap < <gv
 
 " Better Movement
@@ -55,7 +56,7 @@ inoremap <M-b> <S-Left>
 inoremap <M-f> <Right>
 inoremap <C-d> <Delete>
 
-"highlight last inserted text 
+" Highlight last inserted text
 nnoremap gV `[v`]
 
 " Easier block copying to clipboard
@@ -64,7 +65,7 @@ vnoremap <space> "+y
 " Bind nohl
 nnoremap <Leader><space> <ESC>:nohlsearch<CR>
 
-" easier formatting of paragraphs
+" Easier formatting of paragraphs
 vmap Q gq
 nmap Q gqap
 map V V
