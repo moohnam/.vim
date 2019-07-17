@@ -22,7 +22,7 @@ map <Leader>m <esc>:bnext<CR>
 map <Leader>n <esc>:bprevious<CR>
 map <Leader>q <esc>:bp\|bd #<CR>
 map <Leader>gds <esc>:split<CR><C-]>
-map <Leader>gdv <esc>:vertical<CR><C-]>
+map <Leader>gdv <esc>:vsplit<CR><C-]>
 
 " Better Window Management
 map <Tab> <C-w>
