@@ -1,5 +1,6 @@
 " Vundle
-set rtp+=~/.vim/bundle/Vundle.vim
+let vimfiles_path = expand('<sfile>:h')
+execute "set rtp+=".vimfiles_path."/bundle/Vundle.vim"
 call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 Plugin 'fugitive.vim'
@@ -21,7 +22,7 @@ call vundle#end()
 filetype plugin indent on
 
 " CtrlP settings
-set runtimepath^=~/.vim/bundle/ctrlp.vim
+execute "set runtimepath^=".vimfiles_path."/bundle/ctrlp"
 let g:ctrlp_match_window = 'bottom,order:ttb'
 let g:ctrlp_switch_buffer = 0
 let g:ctrlp_working_path_mode = 0
