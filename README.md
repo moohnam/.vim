@@ -4,4 +4,4 @@
 
 `git clone --recurse-submodules https://github.com/moohnam/.vim`
 
-`:PluginInstall`
+`vim -c 'PluginInstall'`
