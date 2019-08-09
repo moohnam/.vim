@@ -58,20 +58,20 @@ if has('gui_running')
   set tw=80
   set cole=1
   set go=g
-endif
 
-if has('macunix')
-  set clipboard=unnamed
-  set guifont=D2Coding:h14
-  cd ~/Documents
-endif
+  if has('macunix')
+    set clipboard=unnamed
+    set guifont=D2Coding:h14
+    cd ~/Documents
+  endif
 
-if has('win32' || 'win32unix')
-  set syntax=markdown
-  set encoding=cp949
-  set fileencodings=utf-8,cp949
-  set langmenu=cp949
-  set guifont=D2Coding:h12:cHANGEUL:qDRAFT
-  set lines=26 columns=120
-  cd ~/Dropbox/Site/md/
+  if has('win32' || 'win32unix')
+    set syntax=markdown
+    set encoding=cp949
+    set fileencodings=utf-8,cp949
+    set langmenu=cp949
+    set guifont=D2Coding:h12:cHANGEUL:qDRAFT
+    set lines=26 columns=120
+    cd ~/Dropbox/Site/md/
+  endif
 endif
