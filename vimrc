@@ -3,6 +3,7 @@
 " Behaviour {{{
 " ---------------------------------------------------
 set nocompatible
+let vimfiles_path = expand('<sfile>:h')
 set wildmenu
 set magic
 set showmatch
@@ -12,7 +13,7 @@ set history=1000
 set nowritebackup
 set noswapfile
 set undofile
-set undodir=~/.vim/undo
+let &undodir=vimfiles_path."/undo"
 set fileencoding=utf-8
 autocmd BufNewFile,BufRead *.md set filetype=markdown | set syntax=markdown
 "set thesaurus=?
@@ -28,7 +29,7 @@ let mapleader=" "  " <space> \"\<space>\"
 " Plugins {{{
 " ---------------------------------------------------
 "" Vim-plug
-if has('win32' || 'win32unix')
+if has('win32') || has('win32unix')
     if empty(glob('%HOME%/vimfiles/autoload/plug.vim'))
         silent !curl -fLo "%HOME%/vimfiles/autoload/plug.vim" --create-dirs
                     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
@@ -41,7 +42,7 @@ else
         autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
     endif
 endif
-call plug#begin('~/.vim/plugged')
+call plug#begin(vimfiles_path.'/plugged')
 Plug 'junegunn/vim-plug'
 if executable('fzf')
     set rtp+=/usr/local/opt/fzf
@@ -63,7 +64,7 @@ Plug 'scrooloose/nerdcommenter'
 Plug 'junegunn/goyo.vim'
 Plug 'Yggdroot/indentLine', { 'on': 'IndentLinesEnable' }
 autocmd! User indentLine doautocmd indentLine Syntax
-let g:indentLine_char = '⎸'
+let g:indentLine_char = '|'
 if executable('ag')
     Plug 'rking/ag.vim'
 endif
@@ -91,7 +92,7 @@ if executable('fzf')
     nnoremap <leader>t <esc>:Tags<CR>
 else
     " CtrlP settings
-    execute "set runtimepath^=".vimfiles_path."/bundle/ctrlp"
+    execute "set runtimepath^=".vimfiles_path."/plugged/ctrlp"
     let g:ctrlp_match_window = 'bottom,order:ttb'
     let g:ctrlp_switch_buffer = 0
     let g:ctrlp_working_path_mode = 0
@@ -175,17 +176,16 @@ hi Visual guifg=White guibg=LightBlue gui=none cterm=bold ctermbg=DarkGrey
 if has('gui_running')
     set go=g
     set clipboard=unnamed
-    set lines=26 columns=120
+    set lines=30 columns=90
     if has('macunix')
         set guifont=D2Coding:h14
     endif
-    if has('win32' || 'win32unix')
+    if has('win32') || has('win32unix')
         set encoding=cp949
         set fileencodings=utf-8,cp949
         set langmenu=cp949
-        set guifont=D2Coding:h16:cHANGEUL:qDRAFT
+        set guifont=D2Coding:h12:cHANGEUL:qDRAFT
     endif
-    cd %:h:r
 endif
 " }}}
 " ---------------------------------------------------
@@ -219,8 +219,6 @@ map <Leader>gr <esc>:NewGrep
 " ---------------------------------------------------
 set backspace=indent,eol,start
 nnoremap <Tab> <C-w>
-vnoremap > >gv
-vnoremap < <gv
 "" better movement
 nnoremap j gj
 nnoremap k gk
@@ -257,6 +255,8 @@ xnoremap <silent> <C-k> :move-2<CR>gv
 xnoremap <silent> <C-j> :move'>+<CR>gv
 xnoremap <silent> <C-l> >gv
 xnoremap <silent> <C-h> <gv
+vnoremap > >gv
+vnoremap < <gv
 xnoremap > >gv
 xnoremap < <gv
 "" formatting
@@ -269,8 +269,8 @@ nnoremap <leader>q :bp\|bd #<CR>
 nnoremap <leader>n :enew!<CR>
 nnoremap <leader>N :tabnew<CR>
 "" fold
-nnoremap <leader>fA <ESC>:set foldlevel=999<CR>
-nnoremap <leader>fa <ESC>:set foldlevel=0<CR>
+nnoremap <leader>fA <ESC>:set foldlevel=0<CR>
+nnoremap <leader>fa <ESC>:set foldlevel=99<CR>
 nnoremap <leader>ff za
 "" file
 nnoremap <leader>gf ^f(:e %:h/<cfile><CR>
@@ -282,6 +282,10 @@ nnoremap <leader>tgg :GitGutterToggle<CR>
 nnoremap <leader>tgs :GitGutterSignsToggle<CR>
 nnoremap <leader>tgl :GitGutterLineHighlightsToggle<CR>
 nnoremap <leader>tgf :GitGutterFold<CR>
-""" Goyo: Distraction-free mode
+"" Goyo: Distraction-free mode
 noremap <leader>tdf <ESC>:Goyo<CR>
+"" Configure
+nnoremap <leader>E :execute "edit ".vimfiles_path."/vimrc"<CR>gg
+nnoremap <leader>R :execute "source ".vimfiles_path."/vimrc"<CR>gg
+nnoremap <leader>p :cd %:h:r<CR>
 " }}}
