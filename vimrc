@@ -13,7 +13,14 @@ set history=1000
 set nowritebackup
 set noswapfile
 set undofile
-let &undodir=vimfiles_path."/undo"
+if has('win32') || has('win32unix')
+    let &undodir=vimfiles_path."\\undo"
+else
+    let &undodir=vimfiles_path."/undo"
+endif
+if empty(glob(&undodir))
+    execute "silent !mkdir ".&undodir
+endif
 set fileencoding=utf-8
 autocmd BufNewFile,BufRead *.md set filetype=markdown | set syntax=markdown
 "set thesaurus=?
@@ -30,8 +37,9 @@ let mapleader=" "  " <space> \"\<space>\"
 " ---------------------------------------------------
 "" Vim-plug
 if has('win32') || has('win32unix')
-    if empty(glob('%HOME%/vimfiles/autoload/plug.vim'))
-        silent !curl -fLo "%HOME%/vimfiles/autoload/plug.vim" --create-dirs
+    if empty(glob('$HOME/vimfiles/autoload/plug.vim'))
+        cd ~
+        silent !curl -fLo "vimfiles/autoload/plug.vim" --create-dirs
                     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
         autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
     endif
