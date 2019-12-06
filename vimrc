@@ -186,6 +186,7 @@ if has('gui_running')
         set langmenu=cp949
         set guifont=D2Coding:h12:cHANGEUL:qDRAFT
     endif
+    cd ~/Documents
 endif
 " }}}
 " ---------------------------------------------------
