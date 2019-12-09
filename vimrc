@@ -9,6 +9,7 @@ set magic
 set showmatch
 set wrapscan
 set history=1000
+set clipboard=unnamed
 "" file
 set nowritebackup
 set noswapfile
@@ -95,9 +96,10 @@ filetype plugin indent on
 "" file search
 if executable('fzf')
     nnoremap <C-p> <esc>:Files<CR>
+    nnoremap ; <esc>:Buffers<CR>
     nnoremap <leader>b <esc>:Buffers<CR>
     nnoremap <leader>v <esc>:History<CR>
-    nnoremap <leader>t <esc>:Tags<CR>
+    nnoremap <leader><leader> <esc>:Tags<CR>
 else
     " CtrlP settings
     execute "set runtimepath^=".vimfiles_path."/plugged/ctrlp"
@@ -114,9 +116,10 @@ else
         let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
         let g:ctrlp_use_caching = 0
     endif
+    nnoremap ; <esc>:CtrlPBuffer<CR>
     nnoremap <leader>b <esc>:CtrlPBuffer<CR>
     nnoremap <leader>v <esc>:CtrlPMRU<CR>
-    nnoremap <leader>t <esc>:CtrlPTag<CR>
+    nnoremap <leader><leader> <esc>:CtrlPTag<CR>
 endif
 "" nerd commenter
 " Add spaces after comment delimiters by default
@@ -183,7 +186,6 @@ hi Visual guifg=White guibg=LightBlue gui=none cterm=bold ctermbg=DarkGrey
 " GUI related
 if has('gui_running')
     set go=g
-    set clipboard=unnamed
     set lines=30 columns=90
     if has('macunix')
         set guifont=D2Coding:h14
@@ -222,6 +224,21 @@ else
     map <Leader>fu :execute " grep! -srnw --binary-files=without-match --exclude-dir=.git . -e " . expand("<cword>") . " " <bar> cwindow <bar> redraw! <CR>
 endif
 map <Leader>gr <esc>:NewGrep
+"" Toggle functions
+function! ToggleNumber()
+    if &number
+        set nonumber
+    else
+        set number
+    endif
+endfunction
+function! ToggleFold()
+    if &foldlevel
+        set foldlevel=0
+    else
+        set foldlevel=99
+    endif
+endfunction
 " }}}
 " ---------------------------------------------------
 " keybinding {{{
@@ -278,8 +295,6 @@ nnoremap <leader>q :bp\|bd #<CR>
 nnoremap <leader>n :enew!<CR>
 nnoremap <leader>N :tabnew<CR>
 "" fold
-nnoremap <leader>fA <ESC>:set foldlevel=0<CR>
-nnoremap <leader>fa <ESC>:set foldlevel=99<CR>
 nnoremap <leader>ff za
 "" file
 nnoremap <leader>gf ^f(:e %:h/<cfile><CR>
@@ -291,6 +306,8 @@ nnoremap <leader>tgg :GitGutterToggle<CR>
 nnoremap <leader>tgs :GitGutterSignsToggle<CR>
 nnoremap <leader>tgl :GitGutterLineHighlightsToggle<CR>
 nnoremap <leader>tgf :GitGutterFold<CR>
+nnoremap <leader>tn :<C-U>call ToggleNumber()<CR>
+nnoremap <leader>tf :<C-U>call ToggleFold()<CR>
 "" Goyo: Distraction-free mode
 noremap <leader>tdf <ESC>:Goyo<CR>
 "" Configure
