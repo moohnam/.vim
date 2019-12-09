@@ -71,9 +71,6 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'nathanaelkane/vim-indent-guides'
 Plug 'scrooloose/nerdcommenter'
 Plug 'junegunn/goyo.vim'
-Plug 'Yggdroot/indentLine', { 'on': 'IndentLinesEnable' }
-autocmd! User indentLine doautocmd indentLine Syntax
-let g:indentLine_char = '|'
 if executable('ag')
     Plug 'rking/ag.vim'
 endif
@@ -152,9 +149,9 @@ set autoindent
 set cindent  " or smart indent
 set cino=N-s
 "" <tab> behaviour
-set tabstop=4
-set softtabstop=4
-set shiftwidth=4
+set tabstop=2
+set softtabstop=2
+set shiftwidth=2
 set shiftround
 set expandtab
 autocmd FileType make setlocal noexpandtab
@@ -216,14 +213,13 @@ if has("autocmd")
     au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$")
                 \| exe "normal! g'\"" | endif
 endif
+command! -nargs=+ -complete=file NewGrep execute 'silent grep! <args>' | redraw! | copen 8
 if executable('ag')
-    command! -nargs=+ NewGrep execute 'silent !ag <args>' | copen 4 | redraw!
-    map <Leader>fu :silent execute " ag! " . expand("<cword>") . " " <bar> cwindow<bar> redraw! <CR>
+    map <Leader>fu :silent execute " !ag " . expand("<cword>") . " " <bar> cwindow<bar> redraw! <CR>
 else
-    command! -nargs=+ NewGrep execute 'silent grep! <args>' | copen 4 | redraw!
     map <Leader>fu :execute " grep! -srnw --binary-files=without-match --exclude-dir=.git . -e " . expand("<cword>") . " " <bar> cwindow <bar> redraw! <CR>
 endif
-map <Leader>gr <esc>:NewGrep
+map <Leader>gr :<C-u>NewGrep 
 "" Toggle functions
 function! ToggleNumber()
     if &number
@@ -314,4 +310,5 @@ noremap <leader>tdf <ESC>:Goyo<CR>
 nnoremap <leader>E :execute "edit ".vimfiles_path."/vimrc"<CR>gg
 nnoremap <leader>R :execute "source ".vimfiles_path."/vimrc"<CR>gg
 nnoremap <leader>p :cd %:h:r<CR>
+nnoremap <leader>r :<C-u>redraw!<CR>
 " }}}
