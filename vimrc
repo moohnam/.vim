@@ -76,6 +76,7 @@ if executable('ag')
 endif
 
 "" Colors
+Plug 'NLKNguyen/papercolor-theme'
 Plug 'tomasr/molokai'
 Plug 'chriskempson/vim-tomorrow-theme'
 Plug 'morhetz/gruvbox'
@@ -175,7 +176,7 @@ set list lcs=tab:\|\
 set t_Co=256
 set t_ut=
 set background=dark
-colorscheme gruvbox
+colorscheme PaperColor
 hi Search term=reverse ctermbg=Red ctermfg=Black guibg=Yellow guifg=Black
 hi CursorColumn term=reverse ctermbg=Black guibg=grey40
 hi CursorLine term=none cterm=bold guibg=grey40
@@ -183,9 +184,9 @@ hi Visual guifg=White guibg=LightBlue gui=none cterm=bold ctermbg=DarkGrey
 " GUI related
 if has('gui_running')
     set go=g
-    set lines=30 columns=90
+    set lines=48 columns=128
     if has('macunix')
-        set guifont=D2Coding:h14
+        set guifont=D2Coding:h16
     endif
     if has('win32') || has('win32unix')
         set encoding=cp949
@@ -241,6 +242,7 @@ endfunction
 " ---------------------------------------------------
 set backspace=indent,eol,start
 nnoremap <Tab> <C-w>
+tnoremap <F1> <C-\><C-n>
 "" better movement
 nnoremap j gj
 nnoremap k gk
