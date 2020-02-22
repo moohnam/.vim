@@ -71,6 +71,8 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'nathanaelkane/vim-indent-guides'
 Plug 'scrooloose/nerdcommenter'
 Plug 'junegunn/goyo.vim'
+Plug 'preservim/nerdtree'
+Plug 'plasticboy/vim-markdown'
 if executable('ag')
     Plug 'rking/ag.vim'
 endif
@@ -296,6 +298,10 @@ nnoremap <leader>N :tabnew<CR>
 nnoremap <leader>ff za
 "" file
 nnoremap <leader>gf ^f(:e %:h/<cfile><CR>
+nnoremap <leader>tt :NERDTreeToggle<CR>
+"" time
+nnoremap <F8> "=strftime("[%Y-%m-%d %H:%M:%S] ")<CR>PA
+inoremap <F8> <C-R>=strftime("[%Y-%m-%d %H:%M:%S] ")<CR>
 "" NERD Commenter
 map <Leader>/ <Plug>NERDCommenterToggle
 "" toggle settings
