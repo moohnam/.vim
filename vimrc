@@ -72,7 +72,6 @@ Plug 'nathanaelkane/vim-indent-guides'
 Plug 'scrooloose/nerdcommenter'
 Plug 'junegunn/goyo.vim'
 Plug 'preservim/nerdtree'
-Plug 'plasticboy/vim-markdown'
 if executable('ag')
     Plug 'rking/ag.vim'
 endif
