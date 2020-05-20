@@ -72,7 +72,8 @@ Plug 'nathanaelkane/vim-indent-guides'
 Plug 'scrooloose/nerdcommenter'
 Plug 'junegunn/goyo.vim'
 Plug 'preservim/nerdtree'
-Plug 'plasticboy/vim-markdown'
+Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'vimwiki/vimwiki'
 if executable('ag')
     Plug 'rking/ag.vim'
 endif
@@ -96,7 +97,6 @@ filetype plugin indent on
 "" file search
 if executable('fzf')
     nnoremap <C-p> <esc>:Files<CR>
-    nnoremap ; <esc>:Buffers<CR>
     nnoremap <leader>b <esc>:Buffers<CR>
     nnoremap <leader>v <esc>:History<CR>
     nnoremap <leader><leader> <esc>:Tags<CR>
@@ -197,6 +197,7 @@ if has('gui_running')
         set guifont=D2Coding:h12:cHANGEUL:qDRAFT
     endif
     cd ~/Documents
+    autocmd VimEnter {} setlocal syntax=markdown
 endif
 " }}}
 " ---------------------------------------------------
@@ -206,7 +207,6 @@ set foldenable
 set foldlevelstart=99
 set foldmethod=indent
 set foldtext=gitgutter#fold#foldtext()
-"set foldmethod=marker
 "match Error /{{{\|}}}/
 " }}}
 " ---------------------------------------------------
@@ -229,6 +229,13 @@ function! ToggleNumber()
         set nonumber
     else
         set number
+    endif
+endfunction
+function! ToggleRelativeNumber()
+    if &relativenumber
+        set norelativenumber
+    else
+        set relativenumber
     endif
 endfunction
 function! ToggleFold()
@@ -273,10 +280,10 @@ nnoremap [b :bprevious<CR>
 nnoremap ]t :tabnext<CR>
 nnoremap [t :tabprevious<CR>
 """ line
-nnoremap <silent> <C-k> :move-2<CR>
-nnoremap <silent> <C-j> :move+<CR>
-nnoremap <silent> <C-l> >>
-nnoremap <silent> <C-h> <<
+" nnoremap <silent> <C-k> :move-2<CR>
+" nnoremap <silent> <C-j> :move+<CR>
+" nnoremap <silent> <C-l> >>
+" nnoremap <silent> <C-h> <<
 xnoremap <silent> <C-k> :move-2<CR>gv
 xnoremap <silent> <C-j> :move'>+<CR>gv
 xnoremap <silent> <C-l> >gv
@@ -291,7 +298,8 @@ nnoremap <F12> ggVG=``zz
 vnoremap Q gq
 nnoremap Q gqap
 "" management
-nnoremap <leader>q :bp\|bd #<CR>
+"nnoremap <leader>q :bp\|bd #<CR>
+nnoremap <leader>q :bd!<CR>
 nnoremap <leader>n :enew!<CR>
 nnoremap <leader>N :tabnew<CR>
 "" fold
@@ -299,9 +307,10 @@ nnoremap <leader>ff za
 "" file
 nnoremap <leader>gf ^f(:e %:h/<cfile><CR>
 nnoremap <leader>tt :NERDTreeToggle<CR>
-"" time
 nnoremap <F8> "=strftime("[%Y-%m-%d %H:%M:%S] ")<CR>PA
 inoremap <F8> <C-R>=strftime("[%Y-%m-%d %H:%M:%S] ")<CR>
+nnoremap <leader>; :enew<CR>:set paste<CR>gg"+P:set syntax=markdown<CR>:set nopaste<CR>:set textwidth=0 lbr<CR>:echo "Clipboard loaded"<CR>
+nnoremap <leader>' gg"+yG:bd!<CR>:echo "Clipboard saved"<CR>
 "" NERD Commenter
 map <Leader>/ <Plug>NERDCommenterToggle
 "" toggle settings
@@ -312,6 +321,7 @@ nnoremap <leader>tgl :GitGutterLineHighlightsToggle<CR>
 nnoremap <leader>tgf :GitGutterFold<CR>
 nnoremap <leader>tn :<C-U>call ToggleNumber()<CR>
 nnoremap <leader>tf :<C-U>call ToggleFold()<CR>
+nnoremap <leader>tr :<C-U>call ToggleRelativeNumber()<CR>
 "" Goyo: Distraction-free mode
 noremap <leader>tdf <ESC>:Goyo<CR>
 "" Configure
