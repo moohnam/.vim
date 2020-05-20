@@ -73,7 +73,6 @@ Plug 'scrooloose/nerdcommenter'
 Plug 'junegunn/goyo.vim'
 Plug 'preservim/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
-Plug 'vimwiki/vimwiki'
 if executable('ag')
     Plug 'rking/ag.vim'
 endif
