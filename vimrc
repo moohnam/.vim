@@ -4,7 +4,7 @@
 " ---------------------------------------------------
 set nocompatible
 let vimfiles_path = expand('<sfile>:h')
-let note_path = expand('~/zettelkasten')
+let note_path = expand('~/zettelkasten/')
 set wildmenu
 set magic
 set showmatch
@@ -59,10 +59,11 @@ endif
 call plug#begin(vimfiles_path.'/plugged')
 Plug 'junegunn/vim-plug'
 if executable('fzf')
-    set rtp+=/usr/local/opt/fzf
+    set rtp+=$HOME/bin/fzf
+    Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
     Plug 'junegunn/fzf.vim'
     if executable('ag')
-        silent !export FZF_DEFAULT_COMMAND='ag -l'
+        silent !export FZF_DEFAULT_COMMAND='rg -l'
     endif
 else
     Plug 'kien/ctrlp.vim'
@@ -78,7 +79,7 @@ Plug 'scrooloose/nerdcommenter'
 Plug 'junegunn/goyo.vim'
 Plug 'preservim/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
-Plug 'vim-pandoc/vim-pandoc'
+" Plug 'vim-pandoc/vim-pandoc'
 Plug 'vim-pandoc/vim-pandoc-syntax'
 if executable('ag')
     Plug 'rking/ag.vim'
@@ -176,7 +177,7 @@ set textwidth=120
 match ErrorMsg '\%>120v.\+'
 match ErrorMsg '\s\+$'
 set conceallevel=2
-set completeopt=menuone,preview
+set completeopt=menuone,longest
 " space is required below
 set list lcs=tab:\|\ 
 " Colorscheme Settings
@@ -192,16 +193,19 @@ hi pandocEmphasis guifg=White
 hi pandocStrong guifg=Pink
 hi pandocStrongEmphasis guifg=Red
 " Pandoc-related
+augroup pandoc_syntax
+    au! BufNewFile,BufFilePre,BufRead *.md set filetype=markdown.pandoc
+augroup END
 let g:pandoc#spell#enabled = 0
 let g:pandoc#conceal#urls = 1
-let g:pandoc#syntax#codeblocks#embeds#langs = ["bash=sh", "cpp", "vim", "python"]
+let g:pandoc#syntax#codeblocks#embeds#langs = ["bash=sh", "cpp", "vim", "python", "rust", "lua", "html"]
 " let g:pandoc#syntax#style#use_definition_lists = 0
 let g:pandoc#syntax#conceal#blacklist = []
 let g:pandoc#syntax#style#emphases = 1
 let g:pandoc#syntax#style#underline_special = 1
 let g:pandoc#keyboard#use_default_mappings = 0
 let g:pandoc#hypertext#use_default_mappings = 0
-let g:pandoc#folding#fold_yaml = 1
+let g:pandoc#module#disabled = ["folding", "spell", "toc", "formatting", "completion"]
 " GUI related
 if has('gui_running')
     set go=g
@@ -351,10 +355,12 @@ nnoremap <leader>E :execute "edit ".vimfiles_path."/vimrc"<CR>gg
 nnoremap <leader>R :execute "source ".vimfiles_path."/vimrc"<CR>gg
 nnoremap <leader>p :cd %:h:r<CR>
 nnoremap <leader>r :<C-u>redraw!<CR>
+nnoremap <leader>C :%s/ $//<CR>
 " }}}
 " ---------------------------------------------------
 " Zettelkasten {{{
 " ---------------------------------------------------
+set isfname-=[,]
 func! New_zettelkasten()
   let l:zid = strftime("%Y%m%d%H%M%S")
   let l:fname = g:note_path . l:zid . '.md'
@@ -367,22 +373,30 @@ command! -nargs=* Znew call New_zettelkasten()
 command! -bang -nargs=* Zlist
   \ call fzf#vim#grep(
   \   'rg --column --line-number --no-heading --color=always --smart-case -- "^title:" ' . g:note_path, 0,
-  \   fzf#vim#with_preview({"options":"--ansi --delimiter : --nth 5.."}), <bang>0)
+  \   fzf#vim#with_preview({"options":"--ansi --delimiter : --nth 6.. --keep-right"}), <bang>0)  " win
+  " \   fzf#vim#with_preview({"options":"--ansi --delimiter : --nth 5.. --keep-right"}), <bang>0)  " mac
 command! -bang -nargs=* Ztag
   \ call fzf#vim#grep(
   \   'rg --column --line-number --no-heading --color=always --smart-case -- "\s\#\S+" ' . g:note_path, 0,
-  \   fzf#vim#with_preview({"options":"--ansi --delimiter : --nth 4.."}), <bang>0)
+  \   fzf#vim#with_preview({"options":"--ansi --delimiter : --nth 5.. --keep-right"}), <bang>0)  " win
+  " \   fzf#vim#with_preview({"options":"--ansi --delimiter : --nth 4.. --keep-right"}), <bang>0)  " mac
 func! CreateMarkdownLink(lines)
   let l:tokens = split(a:lines[0], ":")
-  let l:fid = substitute(l:tokens[0], ".md", "", "")
-  let l:title = substitute(join(l:tokens[2:], ""), "^ ", "", "")
+  " let l:fid = substitute(l:tokens[0], ".md", "", "")  " mac
+  " let l:title = substitute(join(l:tokens[2:], ""), "^ ", "", "")  " mac
+  let l:fid = substitute(join([l:tokens[0], l:tokens[1]], ":"), ".md", "", "")  " win
+  let l:title = substitute(join(l:tokens[3:], ""), "^ ", "", "")  " win
+  let l:title = substitute(l:title, "\"", "", "g")  " win
   return "[" . l:title . "](" . l:fid . ")"
 endfunc
 func! CreateWikiLink(lines)
   let l:tokens = split(a:lines[0], ":")
-  let l:fid = substitute(l:tokens[0], ".md", "", "")
-  let l:fid = substitute(l:fid, "^.*/", "", "g")
-  let l:title = substitute(join(l:tokens[2:], ""), "^ ", "", "")
+  " let l:fid = substitute(l:tokens[0], ".md", "", "")  " mac
+  " let l:fid = substitute(l:fid, "^.*/", "", "g")  " mac
+  " let l:title = substitute(join(l:tokens[2:], ""), "^ ", "", "")  " mac
+  let l:fid = substitute(l:tokens[1], ".md", "", "")  " win
+  let l:fid = substitute(l:fid, "^.*\\", "", "g")  " win
+  let l:title = substitute(join(l:tokens[3:], ""), "^ ", "", "")  " win
   let l:title = substitute(l:title, "\"", "", "g")
   return "[[" . l:fid . "]] " . l:title
 endfunc
@@ -390,10 +404,14 @@ inoremap <expr> <c-x><c-f> fzf#vim#complete#path('rg --files')
 inoremap <expr> <c-l> fzf#vim#complete#word(fzf#wrap({
   \ 'prefix': '\S*$',
   \ 'source': 'rg --no-line-number --no-column "^title:" --color always --vimgrep ' . g:note_path,
-  \ 'options': '--ansi --delimiter : --nth 3..',
+  \ 'options': '--ansi --delimiter : --nth 4.. --keep-right',
   \ 'reducer': { lines -> CreateMarkdownLink(lines) }}))
+  " \ 'options': '--ansi --delimiter : --nth 3.. --keep-right',  " mac
 inoremap <expr> <c-k> fzf#vim#complete#word(fzf#wrap({
   \ 'prefix': '\S*$',
   \ 'source': 'rg --no-line-number --no-column "^title:" --color always --vimgrep ' . g:note_path,
-  \ 'options': '--ansi --delimiter : --nth 3..',
+  \ 'options': '--ansi --delimiter : --nth 4.. --keep-right',
   \ 'reducer': { lines -> CreateWikiLink(lines) }}))
+  " \ 'options': '--ansi --delimiter : --nth 3.. --keep-right',  " mac
+nnoremap <F5> :w<CR>:silent !pandoc --standalone -c %:p:h\res\style.css --lua-filter=%:p:h\res\filter.lua -H %:p:h\res\mermaidjs --mathjax -s % -t html -o %:r.html<CR>:silent !%:r.html<CR>
+" }}}
