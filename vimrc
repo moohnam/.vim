@@ -4,6 +4,7 @@
 " ---------------------------------------------------
 set nocompatible
 let vimfiles_path = expand('<sfile>:h')
+let note_path = expand('~/zettelkasten')
 set wildmenu
 set magic
 set showmatch
@@ -23,7 +24,7 @@ if empty(glob(&undodir))
     execute "silent !mkdir ".&undodir
 endif
 set fileencoding=utf-8
-autocmd BufNewFile,BufRead *.md set filetype=markdown | set syntax=markdown
+autocmd BufNewFile,BufRead *.md set filetype=markdown | set tw=0 | set cc=0
 "set thesaurus=?
 "" search
 set hlsearch
@@ -32,6 +33,10 @@ set ignorecase
 set smartcase
 "map <space> <nop>
 let mapleader=" "  " <space> \"\<space>\"
+set suffixesadd=.md
+"" grep setting
+set grepprg=rg\ -S\ --vimgrep
+set grepformat^=%f:%l:%c:%m
 " }}}
 " ---------------------------------------------------
 " Plugins {{{
@@ -73,6 +78,8 @@ Plug 'scrooloose/nerdcommenter'
 Plug 'junegunn/goyo.vim'
 Plug 'preservim/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'vim-pandoc/vim-pandoc'
+Plug 'vim-pandoc/vim-pandoc-syntax'
 if executable('ag')
     Plug 'rking/ag.vim'
 endif
@@ -110,12 +117,11 @@ else
                 \ 'dir':  '\.git$\|\.yardoc\|public$|log\|tmp$',
                 \ 'file': '\.so$\|\.dat$\|\.DS_Store$\|\.o$\|\.x$'
                 \ }
-    if executable('ag')
-        set grepprg=ag\ --nogroup\ --nocolor
-        let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
+    if executable('rg')
+        set grepprg=rg\ --nogroup\ --nocolor
+        let g:ctrlp_user_command = 'rg %s -l --nocolor --hidden -g ""'
         let g:ctrlp_use_caching = 0
     endif
-    nnoremap ; <esc>:CtrlPBuffer<CR>
     nnoremap <leader>b <esc>:CtrlPBuffer<CR>
     nnoremap <leader>v <esc>:CtrlPMRU<CR>
     nnoremap <leader><leader> <esc>:CtrlPTag<CR>
@@ -180,8 +186,22 @@ set background=dark
 colorscheme PaperColor
 hi Search term=reverse ctermbg=Red ctermfg=Black guibg=Yellow guifg=Black
 hi CursorColumn term=reverse ctermbg=Black guibg=grey40
-hi CursorLine term=none cterm=bold guibg=grey40
+hi CursorLine term=none cterm=bold guibg=gray20
 hi Visual guifg=White guibg=LightBlue gui=none cterm=bold ctermbg=DarkGrey
+hi pandocEmphasis guifg=White
+hi pandocStrong guifg=Pink
+hi pandocStrongEmphasis guifg=Red
+" Pandoc-related
+let g:pandoc#spell#enabled = 0
+let g:pandoc#conceal#urls = 1
+let g:pandoc#syntax#codeblocks#embeds#langs = ["bash=sh", "cpp", "vim", "python"]
+" let g:pandoc#syntax#style#use_definition_lists = 0
+let g:pandoc#syntax#conceal#blacklist = []
+let g:pandoc#syntax#style#emphases = 1
+let g:pandoc#syntax#style#underline_special = 1
+let g:pandoc#keyboard#use_default_mappings = 0
+let g:pandoc#hypertext#use_default_mappings = 0
+let g:pandoc#folding#fold_yaml = 1
 " GUI related
 if has('gui_running')
     set go=g
@@ -195,8 +215,7 @@ if has('gui_running')
         set langmenu=cp949
         set guifont=D2Coding:h12:cHANGEUL:qDRAFT
     endif
-    cd ~/Documents
-    autocmd VimEnter {} setlocal syntax=markdown
+    autocmd VimEnter {} setlocal syntax=pandoc
 endif
 " }}}
 " ---------------------------------------------------
@@ -215,9 +234,9 @@ if has("autocmd")
     au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$")
                 \| exe "normal! g'\"" | endif
 endif
-command! -nargs=+ -complete=file NewGrep execute 'silent grep! <args>' | redraw! | copen 8
+command! -nargs=+ -complete=file NewGrep execute 'silent grep! <args> *' | redraw! | copen 8
 if executable('ag')
-    map <Leader>fu :silent execute " !ag " . expand("<cword>") . " " <bar> cwindow<bar> redraw! <CR>
+    map <Leader>fu :silent execute " !rg " . expand("<cword>") . " " <bar> cwindow<bar> redraw! <CR>
 else
     map <Leader>fu :execute " grep! -srnw --binary-files=without-match --exclude-dir=.git . -e " . expand("<cword>") . " " <bar> cwindow <bar> redraw! <CR>
 endif
@@ -306,10 +325,14 @@ nnoremap <leader>ff za
 "" file
 nnoremap <leader>gf ^f(:e %:h/<cfile><CR>
 nnoremap <leader>tt :NERDTreeToggle<CR>
+nnoremap <F7> "=strftime("%Y %b %d ")<CR>PA
+inoremap <F7> <C-R>=strftime("%Y %b %d ")<CR>
 nnoremap <F8> "=strftime("[%Y-%m-%d %H:%M:%S] ")<CR>PA
 inoremap <F8> <C-R>=strftime("[%Y-%m-%d %H:%M:%S] ")<CR>
 nnoremap <leader>; :enew<CR>:set paste<CR>gg"+P:set syntax=markdown<CR>:set nopaste<CR>:set textwidth=0 lbr<CR>:echo "Clipboard loaded"<CR>
 nnoremap <leader>' gg"+yG:bd!<CR>:echo "Clipboard saved"<CR>
+nnoremap <leader>zl :Zlist<CR>
+nnoremap <leader>zn :Znew<CR>
 "" NERD Commenter
 map <Leader>/ <Plug>NERDCommenterToggle
 "" toggle settings
@@ -329,3 +352,48 @@ nnoremap <leader>R :execute "source ".vimfiles_path."/vimrc"<CR>gg
 nnoremap <leader>p :cd %:h:r<CR>
 nnoremap <leader>r :<C-u>redraw!<CR>
 " }}}
+" ---------------------------------------------------
+" Zettelkasten {{{
+" ---------------------------------------------------
+func! New_zettelkasten()
+  let l:zid = strftime("%Y%m%d%H%M%S")
+  let l:fname = g:note_path . l:zid . '.md'
+  silent exec "cd " . g:note_path
+  silent exec "e " . l:fname
+  silent exec "normal gg0O---\rid: " . l:zid . "\rtitle: \"\"""\r---\<ESC>k$x"
+  silent exec "startinsert"
+endfunc
+command! -nargs=* Znew call New_zettelkasten()
+command! -bang -nargs=* Zlist
+  \ call fzf#vim#grep(
+  \   'rg --column --line-number --no-heading --color=always --smart-case -- "^title:" ' . g:note_path, 0,
+  \   fzf#vim#with_preview({"options":"--ansi --delimiter : --nth 5.."}), <bang>0)
+command! -bang -nargs=* Ztag
+  \ call fzf#vim#grep(
+  \   'rg --column --line-number --no-heading --color=always --smart-case -- "\s\#\S+" ' . g:note_path, 0,
+  \   fzf#vim#with_preview({"options":"--ansi --delimiter : --nth 4.."}), <bang>0)
+func! CreateMarkdownLink(lines)
+  let l:tokens = split(a:lines[0], ":")
+  let l:fid = substitute(l:tokens[0], ".md", "", "")
+  let l:title = substitute(join(l:tokens[2:], ""), "^ ", "", "")
+  return "[" . l:title . "](" . l:fid . ")"
+endfunc
+func! CreateWikiLink(lines)
+  let l:tokens = split(a:lines[0], ":")
+  let l:fid = substitute(l:tokens[0], ".md", "", "")
+  let l:fid = substitute(l:fid, "^.*/", "", "g")
+  let l:title = substitute(join(l:tokens[2:], ""), "^ ", "", "")
+  let l:title = substitute(l:title, "\"", "", "g")
+  return "[[" . l:fid . "]] " . l:title
+endfunc
+inoremap <expr> <c-x><c-f> fzf#vim#complete#path('rg --files')
+inoremap <expr> <c-l> fzf#vim#complete#word(fzf#wrap({
+  \ 'prefix': '\S*$',
+  \ 'source': 'rg --no-line-number --no-column "^title:" --color always --vimgrep ' . g:note_path,
+  \ 'options': '--ansi --delimiter : --nth 3..',
+  \ 'reducer': { lines -> CreateMarkdownLink(lines) }}))
+inoremap <expr> <c-k> fzf#vim#complete#word(fzf#wrap({
+  \ 'prefix': '\S*$',
+  \ 'source': 'rg --no-line-number --no-column "^title:" --color always --vimgrep ' . g:note_path,
+  \ 'options': '--ansi --delimiter : --nth 3..',
+  \ 'reducer': { lines -> CreateWikiLink(lines) }}))
